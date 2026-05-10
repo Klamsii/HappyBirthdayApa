@@ -952,10 +952,20 @@ function showFireworks(album) {
 // ==================================================
 }
 gift.addEventListener('click', () => {
+    const music = document.getElementById('bgMusic');
+
+    if (music) {
+        music.volume = 0.4; // громкость 40%
+        music.play().catch(() => {});
+    }
+
     gift.style.display = 'none';
     playSequence();
 });
 </script>
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
 
 </body>
 </html>
