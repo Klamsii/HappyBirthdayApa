@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Туған күнің құтты болсын, апа ❤️</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    background: radial-gradient(circle at center, #120014 0%, #050008 100%);
+    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    color: #fff;
+}
+
+canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+}
+
+#container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+}
+
+#gift {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: float 3s ease-in-out infinite;
+    transition: transform 0.3s ease;
+}
+
+#gift:hover {
+    transform: scale(1.08);
+}
+
+.gift-icon {
+    font-size: 180px;
+    color: #ff4fcf;
+    text-shadow:
+        0 0 20px #ff4fcf,
+        0 0 40px #ff4fcf,
+        0 0 80px #ff4fcf;
+}
+
+.gift-text {
+    margin-top: 20px;
+    font-size: 34px;
+    color: #ffd6f5;
+    text-shadow:
+        0 0 10px #ff4fcf,
+        0 0 20px #ff4fcf;
+}
+
+#display {
+    position: absolute;
+    font-size: 120px;
+    font-weight: bold;
+    opacity: 0;
+    transform: scale(0.5);
+    text-align: center;
+    color: #ff7ae6;
+    text-shadow:
+        0 0 20px #ff4fcf,
+        0 0 40px #ff4fcf,
+        0 0 80px #ff4fcf,
+        0 0 120px #ff4fcf;
+    pointer-events: none;
+}
+
+.show {
+    animation: appear 1.4s ease forwards;
+}
+
+.heart {
+    font-size: 160px;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    20% {
+        opacity: 1;
+        transform: scale(1.25);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.4);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* ==================== MOBILE ADAPTATION ==================== */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    #container {
+        padding: 20px 10px;
+        min-height: 100vh;
+        height: auto;
+    }
+
+    .gift-icon {
+        font-size: 110px !important;
+    }
+
+    .gift-text {
+        font-size: 24px !important;
+        margin-top: 12px !important;
+        padding: 0 10px;
+    }
+
+    #display {
+        font-size: 56px !important;
+        max-width: 90vw;
+        word-wrap: break-word;
+    }
+
+    .heart {
+        font-size: 90px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .gift-icon {
+        font-size: 84px !important;
+    }
+
+    .gift-text {
+        font-size: 20px !important;
+    }
+
+    #display {
+        font-size: 42px !important;
+    }
+
+    .heart {
+        font-size: 72px !important;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div id="container">
+    <div id="gift">
+        <div class="gift-icon">🎁</div>
+        <div class="gift-text">Нажми на подарок</div>
+    </div>
+
+    <div id="display"></div>
+</div>
+
+<script>
+// ==================== MATRIX PARTICLES ====================
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const chars = '01♥★✦✧✩✪';
+const columns = [];
+const fontSize = 18;
+
+function initColumns() {
+    columns.length = 0;
+    const count = Math.floor(canvas.width / fontSize);
+    for (let i = 0; i < count; i++) {
+        columns[i] = Math.random() * canvas.height;
+    }
+}
+initColumns();
+window.addEventListener('resize', initColumns);
+
+function drawMatrix() {
+    ctx.fillStyle = 'rgba(5, 0, 8, 0.08)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#ff4fcf';
+    ctx.font = `${fontSize}px monospace`;
+
+    for (let i = 0; i < columns.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+        const x = i * fontSize;
+        const y = columns[i];
+
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height && Math.random() > 0.975) {
+            columns[i] = 0;
+        } else {
+            columns[i] += fontSize;
+        }
+    }
+
+    requestAnimationFrame(drawMatrix);
+}
+drawMatrix();
+
+// ==================== ANIMATION SEQUENCE ====================
+const gift = document.getElementById('gift');
+const display = document.getElementById('display');
+
+const sequence = [
+    '3',
+    '2',
+    '1',
+    'Туған',
+    'күнің',
+    'құтты',
+    'болсын',
+    'апа',
+    '❤️'
+];
+
+function showItem(text, callback) {
+    display.classList.remove('show');
+    void display.offsetWidth; // restart animation
+
+    display.innerHTML = text;
+    display.classList.toggle('heart', text === '❤️');
+    display.classList.add('show');
+
+    setTimeout(callback, 1500);
+}
+
+function playSequence(index = 0) {
+    // Когда все слова закончились
+    if (index >= sequence.length) {
+        showFinalScene();
+        return;
+    }
+
+    showItem(sequence[index], () => {
+        playSequence(index + 1);
+    });
+}
+
+// ==================== FINAL SCENE ====================
+// ======================================================
+// ЗАМЕНИ ТОЛЬКО ФУНКЦИЮ showFinalScene()
+// Теперь:
+// 1. Кот появляется.
+// 2. Через 5 секунд плавно исчезает.
+// 3. АЛЬБОМ ПОЯВЛЯЕТСЯ СРАЗУ АВТОМАТИЧЕСКИ.
+// 4. АЛЬБОМ ОСТАЁТСЯ НА ЭКРАНЕ И НЕ ИСЧЕЗАЕТ.
+// ======================================================
+function showFinalScene() {
+    const container = document.getElementById('container');
+
+    // Очищаем контейнер
+    container.innerHTML = '';
+
+    // ВАЖНО: возвращаем стили контейнера
+    container.style.position = 'relative';
+    container.style.zIndex = '10';          // выше звезд
+    container.style.display = 'flex';
+    container.style.flexDirection = 'column';
+    container.style.justifyContent = 'center';
+    container.style.alignItems = 'center';
+    container.style.gap = '30px';
+    container.style.width = '100%';
+    container.style.height = '100vh';
+
+    // Черный фон
+    document.body.style.background = '#000';
+
+    // Скрываем розовый Matrix canvas
+    const canvas = document.getElementById('bg');
+    if (canvas) {
+        canvas.style.display = 'none';
+    }
+
+    // Удаляем старые звезды, если они уже были
+    const oldStars = document.getElementById('stars-background');
+    if (oldStars) oldStars.remove();
+
+    // ==================================================
+    // СОЗДАЕМ ЗВЕЗДНОЕ НЕБО
+    // ==================================================
+    const stars = document.createElement('div');
+    stars.id = 'stars-background';
+    stars.style.position = 'fixed';
+    stars.style.inset = '0';
+    stars.style.zIndex = '1';
+    stars.style.pointerEvents = 'none';
+
+    for (let i = 0; i < 120; i++) {
+    const star = document.createElement('div');
+    const size = Math.random() * 4 + 1;
+
+    star.style.position = 'absolute';
+    star.style.width = size + 'px';
+    star.style.height = size + 'px';
+    star.style.borderRadius = '50%';
+    star.style.background = 'white';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.boxShadow = '0 0 12px white';
+    star.style.opacity = Math.random();
+
+    const duration = Math.random() * 4 + 3;
+    const delay = Math.random() * 5;
+
+    star.style.animation =
+        `twinkle ${duration}s ease-in-out ${delay}s infinite alternate`;
+
+    stars.appendChild(star);
+}
+
+// ==================================================
+// КОМЕТЫ (редкие и красивые)
+// ==================================================
+for (let i = 0; i < 120; i++) {
+    const star = document.createElement('div');
+    const size = Math.random() * 4 + 1;
+
+    star.style.position = 'absolute';
+    star.style.width = size + 'px';
+    star.style.height = size + 'px';
+    star.style.borderRadius = '50%';
+    star.style.background = 'white';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.boxShadow = '0 0 12px white';
+    star.style.opacity = Math.random();
+
+    const duration = Math.random() * 4 + 3;
+    const delay = Math.random() * 5;
+
+    star.style.animation =
+        `twinkle ${duration}s ease-in-out ${delay}s infinite alternate`;
+
+    stars.appendChild(star);
+}
+
+document.body.appendChild(stars);
+// Добавляем анимации только один раз
+if (!document.getElementById('twinkle-style')) {
+    const style = document.createElement('style');
+    style.id = 'twinkle-style';
+    style.textContent = `
+            @keyframes realCometFly {
+                /* Комета появляется справа сверху */
+                0% {
+                    opacity: 0;
+                    transform: translate(500px, -250px) rotate(-28deg) scale(0.9);
+                }
+
+                /* Быстро становится яркой */
+                3% {
+                    opacity: 1;
+                }
+
+                /* Летит влево вниз */
+                15% {
+                    opacity: 1;
+                    transform: translate(-400px, 200px) rotate(-28deg) scale(1);
+                }
+
+                /* Постепенно исчезает */
+                20% {
+                    opacity: 0;
+                    transform: translate(-550px, 280px) rotate(-28deg) scale(1.02);
+                }
+
+                /* Остаётся скрытой до следующего цикла */
+                100% {
+                    opacity: 0;
+                    transform: translate(-550px, 280px) rotate(-28deg) scale(1.02);
+                }
+            }
+        @keyframes twinkle {
+            0% {
+                opacity: 0.2;
+                transform: scale(1) translateY(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.6) translateY(-4px);
+            }
+            100% {
+                opacity: 0.3;
+                transform: scale(1) translateY(4px);
+            }
+        }
+
+        @keyframes cometFly {
+            0% {
+                opacity: 0;
+                transform: translate(-250px, -120px) rotate(25deg);
+            }
+            5% {
+                opacity: 1;
+            }
+            20% {
+                opacity: 1;
+                transform: translate(250px, 120px) rotate(25deg);
+            }
+            25% {
+                opacity: 0;
+                transform: translate(320px, 160px) rotate(25deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(320px, 160px) rotate(25deg);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+    // ==================================================
+    // ПОКАЗЫВАЕМ КОТА
+    // ==================================================
+    const cat = document.createElement('img');
+    cat.src =
+        'https://png.pngtree.com/png-clipart/20231006/original/pngtree-happy-birthday-cat-with-a-cake-png-image_13127174.png';
+    cat.style.position = 'relative';
+    cat.style.zIndex = '10';
+    cat.style.width = window.innerWidth <= 768 ? '220px' : '360px';
+    cat.style.maxWidth = '80vw';
+    cat.style.animation = 'appear 2s ease forwards';
+
+    container.appendChild(cat);
+
+    // ==================================================
+    // ЧЕРЕЗ 5 СЕКУНД ПОКАЗЫВАЕМ АЛЬБОМ ПОД КОТОМ
+    // КОТ ОСТАЁТСЯ НА ЭКРАНЕ
+    // ==================================================
+    setTimeout(() => {
+        showAlbumCard(container);
+    }, 2000);
+}
+
+// ======================================================
+// АЛЬБОМ-ОТКРЫТКА
+// ======================================================
+// ======================================================
+// АЛЬБОМ-ОТКРЫТКА С НАСТОЯЩИМ ОТКРЫВАНИЕМ ПО СЕРЕДИНЕ
+// Полностью замени функцию showAlbumCard(container)
+// ======================================================
+// ======================================================
+// ЗАМЕНИ ПОЛНОСТЬЮ ФУНКЦИЮ showAlbumCard(container)
+// Теперь:
+// 1. Сначала появляется ТОЛЬКО правая обложка.
+// 2. Обложка плавно поднимается снизу вверх.
+// 3. При клике обложка открывается.
+// 4. После открытия становятся видны фото слева и текст справа.
+// ======================================================
+function showAlbumCard(container) {
+    const BOOK_WIDTH = Math.min(900, window.innerWidth * 0.95);
+    const BOOK_HEIGHT = window.innerWidth <= 768 ? 950 : 550;
+    const COVER_WIDTH = BOOK_WIDTH / 2;
+
+    // ==================================================
+    // ДАННЫЕ СТРАНИЦ
+    // ==================================================
+    const pagesData = [
+        {
+            photo: 'photo1.jpg',
+            text: `
+                <h1 style="
+                    color:#ff4fcf;
+                    margin-bottom:25px;
+                    font-size:44px;
+                    font-weight:bold;
+                ">
+                    💖 Құрметті апа!
+                </h1>
+
+                <p style="
+                    font-size:24px;
+                    line-height:1.9;
+                    color:#333;
+                ">
+                    Келіп жеткен 73 жасыңыз<br>
+                    құтты болсын! 🎉<br><br>
+
+                    Ең бастысы<br>
+                    денсаулығыңыз мықты болсын! ❤️
+                </p>
+            `
+        },
+
+        {
+            photo: 'photo2.jpg',
+            text: `
+                <h1 style="
+                    color:#ff4fcf;
+                    margin-bottom:25px;
+                    font-size:44px;
+                    font-weight:bold;
+                ">
+                    🌸 Апа!
+                </h1>
+
+                <p style="
+                    font-size:22px;
+                    line-height:1.9;
+                    color:#333;
+                ">
+                    Әр күніңіз қуанышқа,<br>
+                    жүрегіңіз жылулыққа<br>
+                    толы болсын. ☀️<br><br>
+
+                    Бізге әрдайым қамқор болып,<br>
+                    мейіріміңізді төгіп жүргеніңіз үшін<br>
+                    рақмет. 💖
+                </p>
+            `
+        },
+
+        {
+            photo: 'photo3.jpg',
+            text: `
+                <h1 style="
+                    color:#ff4fcf;
+                    margin-bottom:25px;
+                    font-size:44px;
+                    font-weight:bold;
+                ">
+                    🌟 Тілек
+                </h1>
+
+                <p style="
+                    font-size:22px;
+                    line-height:1.9;
+                    color:#333;
+                ">
+                    Пусть сізді ғайбаттаған<br>
+                    жандардың жолы болмай қалсын.<br><br>
+
+                    Барлық армандарыңызға<br>
+                    жетуге тілектеспін. 🫂
+                </p>
+            `
+        },
+
+        {
+            photo: 'photo4.jpg',
+            text: `
+                <h1 style="
+                    color:#ff4fcf;
+                    margin-bottom:25px;
+                    font-size:42px;
+                    font-weight:bold;
+                ">
+                    ❤️ Жақсы көремін!
+                </h1>
+
+                <p style="
+                    font-size:22px;
+                    line-height:1.9;
+                    color:#333;
+                ">
+                    Мені туған мамаға рақмет.<br><br>
+
+                    Ол арқылы сіздей<br>
+                    әжем болғанына<br>
+                    қатты қуанамын. 🥰<br><br>
+
+                    Туған күніңіз құтты болсын! 🎂✨
+                </p>
+            `
+        }
+    ];
+
+    // ==================================================
+    // ОСНОВНОЙ КОНТЕЙНЕР АЛЬБОМА
+    // ==================================================
+    const album = document.createElement('div');
+    album.style.position = 'relative';
+    album.style.zIndex = '20';
+    album.style.width = BOOK_WIDTH + 'px';
+    album.style.maxWidth = '95vw';
+    album.style.height = BOOK_HEIGHT + 'px';
+    album.style.minHeight = window.innerWidth <= 768 ? '950px' : BOOK_HEIGHT + 'px';
+    album.style.perspective = '3000px';
+    album.style.cursor = 'pointer';
+
+    // ==================================================
+    // ВНУТРЕННИЕ СТРАНИЦЫ
+    // ==================================================
+    const pages = document.createElement('div');
+    pages.style.position = 'absolute';
+    pages.style.inset = '0';
+    pages.style.background = 'white';
+    pages.style.borderRadius = '24px';
+    pages.style.boxShadow = '0 0 60px rgba(255,255,255,0.35)';
+    pages.style.display = 'grid';
+    pages.style.gridTemplateColumns =
+        window.innerWidth <= 768 ? '1fr' : '1fr 1fr';
+    pages.style.overflow = 'hidden';
+    pages.style.opacity = '0';
+    pages.style.transition = 'opacity 0.8s ease';
+
+    // ==================================================
+    // ЛЕВАЯ СТРАНИЦА (ФОТО)
+    // ==================================================
+    const leftPage = document.createElement('div');
+    leftPage.style.padding = window.innerWidth <= 768 ? '15px' : '25px';
+    leftPage.style.display = 'flex';
+    leftPage.style.justifyContent = 'center';
+    leftPage.style.alignItems = 'center';
+    leftPage.style.background = '#ffffff';
+
+    // Контейнер для фотографии фиксированного размера
+const photoFrame = document.createElement('div');
+photoFrame.style.width = '100%';
+photoFrame.style.height = '100%';
+photoFrame.style.overflow = 'hidden';
+photoFrame.style.borderRadius = '18px';
+photoFrame.style.boxShadow = '0 10px 30px rgba(0,0,0,0.15)';
+photoFrame.style.background = '#ffffff';
+
+// Сама фотография
+const photo = document.createElement('img');
+photo.style.width = '100%';
+photo.style.height = '100%';
+
+// Подгоняет любое изображение под рамку,
+// не изменяя размер альбома
+photo.style.objectFit = 'cover';
+photo.style.objectPosition = 'center center';
+photo.style.display = 'block';
+
+// Добавляем фото в рамку
+photoFrame.appendChild(photo);
+
+// Добавляем рамку на левую страницу
+leftPage.appendChild(photoFrame);
+
+    // ==================================================
+    // ПРАВАЯ СТРАНИЦА (ТЕКСТ)
+    // ==================================================
+    const rightPage = document.createElement('div');
+    rightPage.style.padding = window.innerWidth <= 768 ? '20px 20px 40px 20px' : '40px 40px 100px 40px';
+    rightPage.style.display = 'flex';
+    rightPage.style.flexDirection = 'column';
+    rightPage.style.justifyContent = 'center';
+    rightPage.style.background = '#ffffff';
+    rightPage.style.color = '#333';
+    rightPage.style.fontFamily = 'Georgia, serif';
+    rightPage.style.fontSize = window.innerWidth <= 768 ? '16px' : '20px';
+    rightPage.style.textAlign = 'center';
+    rightPage.style.position = 'relative';
+    rightPage.style.overflowY = 'auto';
+    rightPage.style.overflowX = 'hidden';
+
+    // ==================================================
+    // КНОПКИ НАВИГАЦИИ
+    // ==================================================
+    const nav = document.createElement('div');
+nav.style.position = 'absolute';
+nav.style.bottom = '20px';
+nav.style.left = '50%';
+nav.style.transform = 'translateX(-50%)';
+nav.style.display = 'flex';
+nav.style.gap = '20px';
+nav.style.zIndex = '10';
+
+function createButton(text) {
+    const btn = document.createElement('button');
+    btn.textContent = text;
+    btn.style.padding = '12px 24px';
+    btn.style.fontSize = '18px';
+    btn.style.fontWeight = 'bold';
+    btn.style.border = 'none';
+    btn.style.borderRadius = '50px';
+    btn.style.background = '#ff4fcf';
+    btn.style.color = 'white';
+    btn.style.cursor = 'pointer';
+    btn.style.boxShadow = '0 4px 15px rgba(255,79,207,0.35)';
+    btn.style.transition = '0.3s';
+    return btn;
+}
+
+const prevBtn = createButton('⬅ Назад');
+const nextBtn = createButton('Далее ➡');
+
+nav.appendChild(prevBtn);
+nav.appendChild(nextBtn);
+    // ==================================================
+    // ОБЛОЖКА
+    // ==================================================
+    const cover = document.createElement('div');
+    cover.style.position = 'absolute';
+    cover.style.top = '0';
+    cover.style.left = '0';
+    cover.style.width = COVER_WIDTH + 'px';
+    cover.style.height = '100%';
+    cover.style.background = 'white';
+    cover.style.borderRadius = '24px';
+    cover.style.boxShadow = '0 0 60px rgba(255,255,255,0.35)';
+    cover.style.display = 'flex';
+    cover.style.justifyContent = 'center';
+    cover.style.alignItems = 'center';
+    cover.style.transformOrigin = 'left center';
+    cover.style.backfaceVisibility = 'hidden';
+    cover.style.transition =
+        'left 1s ease, transform 1.8s cubic-bezier(0.25,0.8,0.25,1), opacity 2s ease';
+    cover.style.opacity = '0';
+    cover.style.transform = 'translateY(120px)';
+
+    const coverImg = document.createElement('img');
+    coverImg.src = 'https://www.svgrepo.com/show/23265/i-love-you-note.svg';
+    coverImg.style.width = '180px';
+    coverImg.style.height = '180px';
+    cover.appendChild(coverImg);
+
+    // ==================================================
+    // ДОБАВЛЯЕМ НА СТРАНИЦУ
+    // ==================================================
+    album.appendChild(pages);
+    album.appendChild(cover);
+    container.appendChild(album);
+
+    // Плавное появление обложки
+    requestAnimationFrame(() => {
+        cover.style.opacity = '1';
+        cover.style.transform = 'translateY(0)';
+    });
+
+       // ==================================================
+    // ДОБАВЛЯЕМ ВНУТРЕННИЕ СТРАНИЦЫ В АЛЬБОМ
+    // ==================================================
+    pages.appendChild(leftPage);
+    pages.appendChild(rightPage);
+
+    // ==================================================
+    // ОБНОВЛЕНИЕ СТРАНИЦЫ
+    // ==================================================
+    let currentPage = 0;
+
+    function updatePage() {
+        const page = pagesData[currentPage];
+
+        // Обновляем фотографию
+        photo.src = page.photo;
+
+        // Обновляем текст
+        rightPage.innerHTML = page.text;
+    }
+
+    // ==================================================
+    // ОТКРЫТИЕ АЛЬБОМА
+    // ==================================================
+    let isOpen = false;
+
+    album.addEventListener('click', function openAlbum() {
+        if (isOpen) return;
+        isOpen = true;
+
+        // Заполняем первую страницу
+        updatePage();
+
+        // Показываем внутренние страницы
+        pages.style.opacity = '1';
+
+        // Плавно перемещаем обложку вправо
+        cover.style.left = COVER_WIDTH + 'px';
+        cover.style.borderRadius = '0 24px 24px 0';
+
+        // Затем открываем обложку
+        setTimeout(() => {
+            cover.style.transform = 'rotateY(-180deg)';
+        }, 1000);
+
+        // Открывается только один раз
+        album.removeEventListener('click', openAlbum);
+    });
+
+    // ==================================================
+    // НАВИГАЦИЯ ПО КЛИКУ НА СТРАНИЦЫ
+    // Левая страница (фото)  -> предыдущая страница
+    // Правая страница (текст) -> следующая страница
+    // ==================================================
+
+    // Клик по фотографии = назад
+    leftPage.style.cursor = 'pointer';
+    leftPage.title = '⬅ Нажмите, чтобы вернуться назад';
+
+    leftPage.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        if (!isOpen) return;
+
+        if (currentPage > 0) {
+            currentPage--;
+            updatePage();
+        }
+    });
+
+    // Клик по тексту = вперед
+    rightPage.style.cursor = 'pointer';
+    rightPage.title = '➡ Нажмите, чтобы перейти дальше';
+
+    // ==================================================
+// КЛИК ПО ПРАВОЙ СТРАНИЦЕ = СЛЕДУЮЩАЯ СТРАНИЦА
+// Если это последняя страница, альбом закрывается
+// и запускается праздничный салют.
+// ==================================================
+rightPage.addEventListener('click', (e) => {
+    e.stopPropagation();
+
+    if (!isOpen) return;
+
+    // Если есть следующая страница — показываем её
+    if (currentPage < pagesData.length - 1) {
+        currentPage++;
+        updatePage();
+    }
+    // Если это уже последняя страница — запускаем финальный салют
+    else {
+        showFireworks(album);
+    }
+});
+
+// ==================================================
+// ФИНАЛЬНЫЙ САЛЮТ
+// ==================================================
+function showFireworks(album) {
+    // Блокируем повторный запуск
+    if (document.getElementById('fireworks-container')) return;
+
+    // Плавно закрываем альбом
+    album.style.transition = 'opacity 2s ease, transform 2s ease';
+    album.style.opacity = '0';
+    album.style.transform = 'scale(0.9)';
+
+    // После исчезновения альбома показываем салют
+    setTimeout(() => {
+        album.remove();
+
+        const fireworks = document.createElement('div');
+        fireworks.id = 'fireworks-container';
+        fireworks.style.position = 'fixed';
+        fireworks.style.inset = '0';
+        fireworks.style.zIndex = '999';
+        fireworks.style.pointerEvents = 'none';
+        fireworks.style.background = 'rgba(0,0,0,0.2)';
+
+        // Добавляем несколько GIF-салютов
+        for (let i = 0; i < 8; i++) {
+            const fire = document.createElement('img');
+            fire.src =
+                'https://effects1.ru/gallery/GIF/salyut-PNG/iskra-1-0.gif';
+
+            // Размер салюта
+            const size = Math.random() * 220 + 180; // 180–400px
+            fire.style.width = size + 'px';
+            fire.style.height = size + 'px';
+
+            // Случайная позиция
+            fire.style.position = 'absolute';
+            fire.style.left = Math.random() * 85 + '%';
+            fire.style.top = Math.random() * 70 + '%';
+
+            // Эффекты
+            fire.style.opacity = '0';
+            fire.style.filter =
+                'drop-shadow(0 0 20px rgba(255,255,255,0.9)) ' +
+                'drop-shadow(0 0 50px rgba(255,215,0,0.8))';
+
+            // Плавное появление
+            fire.style.animation =
+                `fireworkBurst 2.5s ease ${Math.random() * 3}s infinite`;
+
+            fireworks.appendChild(fire);
+        }
+
+        document.body.appendChild(fireworks);
+
+        // Добавляем CSS-анимацию один раз
+        if (!document.getElementById('firework-style')) {
+            const style = document.createElement('style');
+            style.id = 'firework-style';
+            style.textContent = `
+                @keyframes fireworkBurst {
+                    0% {
+                        opacity: 0;
+                        transform: scale(0.2);
+                    }
+                    15% {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+                    70% {
+                        opacity: 1;
+                        transform: scale(1.15);
+                    }
+                    100% {
+                        opacity: 0;
+                        transform: scale(1.35);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }, 2000);
+}
+// ==================================================
+// СТАРТ ПО НАЖАТИЮ НА ПОДАРОК
+// ==================================================
+}
+gift.addEventListener('click', () => {
+    gift.style.display = 'none';
+    playSequence();
+});
+</script>
+
+</body>
+</html>
